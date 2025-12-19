@@ -145,7 +145,7 @@ def count_samples(
     multiplier = 0
     fig, ax = plt.subplots(layout='constrained', figsize=(10,8))
     for c, name in enumerate(summary.keys()):
-        if 'msopt' in name or name=='global_EI':
+        if 'msbo' in name or name=='global_EI':
             means, stds = [], []
             for k in summary[name].keys():
                 means.append(np.mean(summary[name][k]))
@@ -178,11 +178,11 @@ def regret_summary(path: str, steps: int, costs: List[float], save: bool = True,
             filepath = subdir + os.sep + file
             if filepath.endswith(".json"):
                 name = file.removesuffix('_summary.json')
-                # if name not in ['random', 'global_UCB', 'astudillo_UCB', 'msopt_EI_UCB', 'msopt_UCB']:
+                # if name not in ['random', 'global_UCB', 'astudillo_UCB', 'msbo_EI_UCB', 'msbo_UCB']:
                 #     continue
                 if name not in stats:
                     stats[name] = []
-                    if 'msopt' in name:
+                    if 'msbo' in name:
                         cost_stats[name] = []
                 with open(filepath, 'r') as f:
                     summary = json.load(f)
@@ -190,13 +190,13 @@ def regret_summary(path: str, steps: int, costs: List[float], save: bool = True,
                     regret = [iter['best_observed_value'] for iter in trial_summary]
                     # regret = [iter['regret'] for iter in trial_summary]
                     stats[name].append(regret)
-                    if 'msopt' in name:
+                    if 'msbo' in name:
                         cost = [costs[iter['sampled_subseq']] for iter in trial_summary]
                         cost_stats[name].append(cost)
     
     plt.rcParams["figure.figsize"] = (12,8)
     for c, name in enumerate(stats.keys()):
-        if name.startswith('msopt'):
+        if name.startswith('msbo'):
             max_length = max(len(arr) for arr in cost_stats[name])
             padded_costs = [np.pad(arr, (0, max_length - len(arr)), 'constant') for arr in cost_stats[name]]
             padded_stats = [np.pad(arr, (0, max_length - len(arr)), 'edge') for arr in stats[name]]
@@ -206,7 +206,7 @@ def regret_summary(path: str, steps: int, costs: List[float], save: bool = True,
         std = np.asarray(stats[name]).std(axis=0)/np.sqrt(len(stats[name]))
 
         xx = np.arange(1, mean.shape[0]+1)
-        if name.startswith('msopt'):
+        if name.startswith('msbo'):
             xx = np.asarray(cost_stats[name]).mean(axis=0)
             xx = np.asarray([xx[:i+1].sum() for i in range(len(xx))])
 
@@ -314,7 +314,7 @@ class OptimizationSummary:
         plt.rcParams["figure.figsize"] = (12,8)
         for c, (name, values) in enumerate(stats.items()):
             xx = np.arange(1, values['mean'].shape[0]+1)
-            if not name.startswith('msopt'):
+            if not name.startswith('msbo'):
                 xx = kwargs['steps']*xx
             plt.plot(xx, values['mean'], color=colors[c], label=name)
             plt.fill_between(

@@ -4,11 +4,11 @@ import numpy as np
 from msbo.optimizer.utils import at_least_2dim
 
 
-def get_dataset_from_platform(platform, tkwargs={"dtype": torch.double, "device": torch.device("cpu")}, msopt=True):
+def get_dataset_from_platform(platform, tkwargs={"dtype": torch.double, "device": torch.device("cpu")}, msbo=True):
     model_dataset = dict()
     if platform.inventory.n_samples is None:
         return model_dataset
-    if msopt:
+    if msbo:
         for step in platform.process.n_processes:
             model_dataset[step] = dict()
             sample_ids = platform.inventory.samples_at_process(step)    # all samples that arrive to process "step"

@@ -44,7 +44,7 @@ class BayesOptimizer:
         self.fixed_xs = fixed_xs
 
     def _update_dataset(self):
-        self.dataset = get_dataset_from_platform(self.oracle, tkwargs=self.tkwargs, msopt=not self.global_optimization)
+        self.dataset = get_dataset_from_platform(self.oracle, tkwargs=self.tkwargs, msbo=not self.global_optimization)
         value, idx = torch.max(self.dataset[self.obj_idx]['y'], 0)
         self.best_observed_value, self.best_sample = value.item(), self.dataset[self.obj_idx]['ids'][idx].int().item()
     
@@ -76,7 +76,7 @@ class BayesOptimizer:
         ) 
         return candidates, acqf_values, sampled_subseq, sampled_id
     
-    def msopt_step(self, acqf_dict, subseq=None):
+    def msbo_step(self, acqf_dict, subseq=None):
         ## create list of bounds for each subsequence of processes
         tunable_dims = []
         input_dims = []
@@ -100,7 +100,7 @@ class BayesOptimizer:
         )
         return candidates, acqf_values, sampled_subseq, sampled_id
     
-    def msopt_step_fixed_xs(self, acqf_dict, subseq=None):
+    def msbo_step_fixed_xs(self, acqf_dict, subseq=None):
         ## create list of bounds for each subsequence of processes
         tunable_dims = []
         input_dims = []
@@ -161,9 +161,9 @@ class BayesOptimizer:
                     fix_previous_xs=self.fixed_xs,
                 )
                 if self.fixed_xs:
-                    candidates, acqf_values, sampled_subseq, sampled_id = self.msopt_step_fixed_xs(acqf_dict, subseq=subseq)    
+                    candidates, acqf_values, sampled_subseq, sampled_id = self.msbo_step_fixed_xs(acqf_dict, subseq=subseq)    
                 else:
-                    candidates, acqf_values, sampled_subseq, sampled_id = self.msopt_step(acqf_dict, subseq=subseq)
+                    candidates, acqf_values, sampled_subseq, sampled_id = self.msbo_step(acqf_dict, subseq=subseq)
                 if len(acq_funcs)>1 and np.isclose(acqf_values, 0., atol=5.e-3):
                     continue
                 else:
@@ -240,7 +240,7 @@ class BayesOptimizer:
             subseq_reps: Optional[List[int]] = None,
     ):
         self.cost_ratios = cost_ratios
-        msopt_flag = not self.global_optimization #used when in msopt to set global iteration every 'global_every' epochs
+        msbo_flag = not self.global_optimization #used when in msbo to set global iteration every 'global_every' epochs
         ## average over multiple trials
         for trial in range(1, n_trials + 1): 
             # if verbose:
@@ -265,11 +265,11 @@ class BayesOptimizer:
                 if random_search:
                     sampled_subseq, sampled_id, new_x = self.random_sample()
                 else:                    
-                    # condition_glob = (iteration%global_every==0 or counter>=5) and msopt_flag
+                    # condition_glob = (iteration%global_every==0 or counter>=5) and msbo_flag
                     condition_glob = (
                         (
                             iteration%global_every==0 or current_cost+1.>=epochs
-                        ) and msopt_flag
+                        ) and msbo_flag
                     )
                     optimization_step = self._step_wrapper(self.optimize_acqf_and_get_observation, condition=condition_glob)
                     # subseq = self.subseq_selection(iteration, subseq_reps) if subseq_reps is not None else None # when forced frequency

@@ -48,7 +48,7 @@ while counter<N_EXPERIMENTS:
         ITER = 100 + initial_data  # sets the maximum budget (cost)
         STEPS = 2
         optim_config = [
-            {'name': 'msopt_EI_UCB', 'epochs': ITER, 'global_every': 1000, 'global_optimization': False, 'acqf': ['qEI', 'qUCB']},
+            {'name': 'msbo_EI_UCB', 'epochs': ITER, 'global_every': 1000, 'global_optimization': False, 'acqf': ['qEI', 'qUCB']},
             {'name': 'random', 'epochs': ITER, 'global_every': 1000, 'global_optimization': True, 'random_search':True, 'acqf': None},
             {'name': 'global_EI', 'epochs': ITER, 'global_every': 1000, 'global_optimization': True, 'acqf': ['qEI']},
             # {'name': 'astudillo_EI', 'epochs': ITER, 'global_every': 1, 'global_optimization': False, 'acqf': ['qEI']},
