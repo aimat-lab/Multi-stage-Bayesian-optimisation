@@ -1,0 +1,13 @@
+input_dim:
+  0: 4
+  1: 2
+measurement:
+  0: !!python/tuple
+  - identity
+  - null
+noise_meas:
+  0: .1
+  1: .2
+output_dim:
+  0: 2
+  1: 1

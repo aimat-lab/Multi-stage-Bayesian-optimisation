@@ -1,0 +1,8 @@
+setup.py
+msbo/__init__.py
+msbo/main.py
+msbo.egg-info/PKG-INFO
+msbo.egg-info/SOURCES.txt
+msbo.egg-info/dependency_links.txt
+msbo.egg-info/requires.txt
+msbo.egg-info/top_level.txt
