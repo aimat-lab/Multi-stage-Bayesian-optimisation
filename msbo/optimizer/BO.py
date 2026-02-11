@@ -255,10 +255,8 @@ class BayesOptimizer:
             iteration = 1
             current_cost = 0.
             subseq_counter = [0]*len(self.oracle.process.n_processes)
-            posterior_summary = {'x': [], 'y': []}
             denoised_summary = {'x': [], 'y': []}
             max_mean_summary = {'x': [], 'y': []}
-            lcb_summary = {'x': [], 'y': []}
             while current_cost<epochs and iteration<500:
                 ## fit the model
                 self.model.fit()  

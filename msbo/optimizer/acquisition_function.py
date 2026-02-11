@@ -122,6 +122,9 @@ def cascade_optimize_acqf(
     '''
     works only for q=1 at the moment
     ''' 
+    if costs is not None:
+        if any(abs(c) < 1e-6 for c in costs):
+            raise ValueError("Costs must be greater than 1e-6 for numerical stability.")
     candidates_list = []
     acqf_values_list = []
     sampled_id_list = []
