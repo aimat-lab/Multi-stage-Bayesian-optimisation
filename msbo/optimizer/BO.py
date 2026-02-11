@@ -279,7 +279,7 @@ class BayesOptimizer:
                         sampler=SobolQMCNormalSampler(mc_samples),
                         model=self.model, 
                         best_observed_value=self.best_observed_value,
-                        beta=100*(epochs-current_cost)/epochs if len(acq_funcs)>1 else 10**(-(4.8/(epochs+1))*iteration + 2.8),
+                        beta=100*(epochs-current_cost)/epochs + 1,
                         subseq=subseq,
                     )
                     subseq_counter[sampled_subseq] += 1
