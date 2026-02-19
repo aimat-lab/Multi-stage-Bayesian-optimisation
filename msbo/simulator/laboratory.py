@@ -18,7 +18,6 @@ class Laboratory:
         self.seed = config.get('seed', None)
         if self.seed is None: 
             warnings.warn("if seed is not passed to laboratory, results may be unreproducible")
-        # self.rng = np.random.default_rng(seed)
         self.process = MultiStepProcess(config, seed=self.seed, last_squashed=False)
         self.inventory = Inventory()
 

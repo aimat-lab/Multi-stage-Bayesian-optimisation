@@ -15,6 +15,7 @@ In this paper, we introduce an extension to Bayesian optimisation that allows fl
 ```text
 msbo/
 ├── main.py                    # Main entry point for running experiments
+├── demo_synthetic_generator.ipynb # Demonstration of the synthetic function generator
 ├── config/                    # Configuration files for different process types
 │   ├── standard.yml
 │   ├── noisy_process.yml
@@ -123,6 +124,10 @@ python -m msbo.main --process noisy_process --complexity 50 2 --start_counter 0
 ```
 Note: The hyperparameters for the optimisation loops (such as iterations and acquisition functions) are defined directly within main.py and are pre-configured to match the experimental conditions reported in our study.
 
+### Synthetic Dataset Generation
+
+The repository includes a Jupyter Notebook, `demo_synthetic_generator.ipynb`, which provides an executable demonstration of the neural network-based function generator detailed in Section 1 of the Supplementary Information. This notebook illustrates the configuration of the multi-stage cascade, the modulation of function complexity via the seed datasets, and the procedures for sampling and visualising the resulting functional landscapes.
+
 ### Command Line Arguments
 
 - `-p, --process`: Name of configuration file of the process to optimize
@@ -135,7 +140,6 @@ Configuration files in the `config/` directory define:
 - Input and output dimensions for each stage
 - Measurement modes (identity, filter, etc.)
 - Process noise levels (if applicable)
-- Other process-specific parameters
 
 ## Running Experiments
 

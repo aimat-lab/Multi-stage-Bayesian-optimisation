@@ -4,13 +4,13 @@ from typing import List, Dict, Optional
 class Inventory:
     def __init__(
             self,
-            data_dict: Dict = dict(),
+            data_dict: Optional[Dict] = None,
     ) -> None:
         '''
         dataDict = {sample_id: {process_id:{'x': ndarray, 'h': ndarray, 'm': ndarray}, etc...}, etc...}
         '''
         super().__init__()
-        self.data_dict = data_dict
+        self.data_dict = data_dict if data_dict is not None else {}
 
     @property
     def n_samples(self) -> List[int]:
