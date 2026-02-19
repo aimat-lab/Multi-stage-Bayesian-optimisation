@@ -17,21 +17,29 @@ args = parser.parse_args()
 
 
 N_EXPERIMENTS = 1
-PATH = './results/'+args.process+'_'+'_'.join([str(c) for c in args.complexity])+'/'
-if not os.path.exists(PATH):
-    os.mkdir(PATH)
-CONFIG = args.process+'.yml'
+
+# Resolve paths relative to the msbo/ package directory so the script can be
+# executed from any working directory (e.g., `python -m msbo.main`).
+BASE_DIR = os.path.dirname(__file__)
+CONFIG_DIR = os.path.join(BASE_DIR, 'config')
+RESULTS_DIR = os.path.join(BASE_DIR, 'results')
+
+CONFIG = args.process + '.yml'
+PATH = os.path.join(
+    RESULTS_DIR,
+    args.process + '_' + '_'.join([str(c) for c in args.complexity]),
+)
+os.makedirs(PATH, exist_ok=True)
 
 seed = args.start_counter
 counter = 0
 while counter<N_EXPERIMENTS:
     try:
         # Create the directory
-        SAVE_PATH = PATH+str(seed)+'/'
-        if not os.path.exists(SAVE_PATH):
-            os.mkdir(SAVE_PATH)
+        SAVE_PATH = os.path.join(PATH, str(seed))
+        os.makedirs(SAVE_PATH, exist_ok=True)
 
-        with open('./config/'+CONFIG, 'r') as f:
+        with open(os.path.join(CONFIG_DIR, CONFIG), 'r') as f:
             platform_config = yaml.full_load(f)
         platform_config['complexity'] = {i:c for i, c in enumerate(args.complexity)}
         platform_config['seed'] = seed    
@@ -40,7 +48,7 @@ while counter<N_EXPERIMENTS:
         if optimum < 0.:
             raise ValueError(f"Negative optimum can lead to error when choosing the acquisition function value (Not handled correctly).")
         print(f'seed: {seed} - optimum: {optimum}')
-        with open(os.path.join(SAVE_PATH, f"ground_truth.txt"), "w") as f:
+        with open(os.path.join(SAVE_PATH, "ground_truth.txt"), "w") as f:
             f.write(f"{x_optimum.tolist()}, {optimum}\n")
         initial_data = 2*(sum([v for v in platform_config['input_dim'].values()]) + 1)
 
