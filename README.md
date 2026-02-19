@@ -36,11 +36,49 @@ msbo/
 └── results/                   # Output directory for experiment results
 ```
 
+## Installation
+
+This project is tested with **Python 3.11** (see `environment.yml` for pinned versions).
+
+### Option A (recommended): Conda / mamba
+
+```bash
+git clone <REPO_URL>
+cd MSBO
+
+# Create and activate the environment
+conda env create -f environment.yml
+conda activate msbo_env
+
+# Install the package (editable, for development)
+pip install -e .
+```
+
+To install non-editable (like an end user), use `pip install .` instead.
+
+### Option B: pip-only (virtualenv)
+
+If you prefer not to use Conda, create a virtual environment and install dependencies.
+The most reproducible approach is to follow the pinned versions in `environment.yml`.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+
+# Install the core dependencies (see environment.yml for pinned versions)
+python -m pip install torch gpytorch botorch numpy scipy matplotlib pandas seaborn pyyaml scikit-learn openpyxl
+
+# Install msbo
+python -m pip install -e .
+```
+
 ## Usage
 
 ### Basic Example
 
 ```bash
+cd msbo
 python main.py \
   --process standard \
   --complexity 50 2 \
