@@ -59,15 +59,15 @@ To install non-editable (like an end user), use `pip install .` instead.
 ### Option B: pip-only (virtualenv)
 
 If you prefer not to use Conda, create a virtual environment and install dependencies.
-The most reproducible approach is to follow the pinned versions in `environment.yml`.
+Pinned versions matching `environment.yml` are provided in `requirements.txt`.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 
-# Install the core dependencies (see environment.yml for pinned versions)
-python -m pip install torch gpytorch botorch numpy scipy matplotlib pandas seaborn pyyaml scikit-learn openpyxl
+# Install the pinned dependencies
+python -m pip install -r requirements.txt
 
 # Install msbo
 python -m pip install -e .
