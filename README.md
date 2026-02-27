@@ -45,7 +45,6 @@ This project is tested with **Python 3.11** (see `environment.yml` for pinned ve
 
 ```bash
 git clone <REPO_URL>
-cd MSBO
 
 # Create and activate the environment
 conda env create -f environment.yml
